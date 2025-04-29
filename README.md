@@ -17,12 +17,11 @@ AMCAXRender SDK 示例程序
 ```powershell
 cmake -B ./build/ `
     -DAMCAX_DIR="D:/code/2024/project/AMCAXRenderSample1/Packages/AMCAXKernel" `
-    -DAMCAXRender_DIR="D:/code/2024/project/AMCAXRenderSample1/Packages/AMCAXRender" `
-    -Dnlohmann_json_DIR="D:/code/2024/project/AMCAXRenderSample1/Packages/nlohmann_json" `
+    -DAMCAXRender_PATH="D:/code/2024/project/AMCAXRenderSample1/Packages/AMCAXRender" `
     -DCMAKE_PREFIX_PATH="D:/install/QT/6.5.3/msvc2019_64/"
 ```
 参考编译命令
 ```powershell
-    cmake --build ./build/ --config Release
+    cmake --build ./build/ --config Release -j8
 ```
 
