@@ -16,17 +16,28 @@ Mainwindow::Mainwindow(QWidget *parent)
 	//窗口布局
 	ui.gridLayout->addWidget(mRender->widget);
 
-	std::ifstream file("prism.json");
+	//构建线数据
+	AMCAXRender::CAXMeshInfo rays;
+	rays.category = "SHAPE";
+	rays.id = "rays";
 
-	if (!file.is_open()) {
-		std::cerr << "Failed to open file: prism.json" << std::endl;
-		return;
-	}
+	// 顶点坐标，每个面需要四个点，共24个点
+	rays.points = {
+		{0.0, 0.0, 0.0}, {10.0, 0.0, 0.0}, {10.0, 10.0, 0.0}, {0.0, 10.0, 0.0},
+		{0.0, 0.0, 10.0}, {10.0, 0.0, 10.0}, {10.0, 10.0, 10.0}, {0.0, 10.0, 10.0},
+	};
 
-	nlohmann::json_abi_v3_11_3::ordered_json jsonData;
-	file >> jsonData;
-	auto entity = mRender->entityFactory->FromJson(&jsonData);
+	// 边数据
+	rays.edges = {
+		{"index", {0, 1,2,3,4,5,6,7}}
+	};
+
+	auto entity = mRender->entityFactory->FromCAXMeshInfo(rays);
 	mRender->entityManage->AddEntity(entity);
+
+	//设置光线宽度
+	mRender->entityManage->SetRayFlag(entity->GetEntityId(), true, 3);
+
 	mRender->cameraManage->ResetCamera();
 	mRender->entityManage->DoRepaint();
 }
